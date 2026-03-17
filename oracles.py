@@ -18,6 +18,11 @@ def build_phase_flip_oracle(num_qubits, target_state):
     
     return qc
 
+def balanced_oracle():
+    qc = QuantumCircuit(2)
+    qc.cx(0, 1)  # Performs |x>|y ^ x>
+    return qc
+
 # Example usage for 3 qubits targeting state |111>
 oracle = build_phase_flip_oracle(3, '111')
 print(oracle.draw())
