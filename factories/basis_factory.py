@@ -47,7 +47,7 @@ def get_2qubit_y_basis():
     return states
 
 
-def get_bell_states():
+def get_bell_basis():
     # Function Constraints:
     # Inputs: None
     # Outputs: dict -> Keys 'phi+', 'phi-', 'psi+', 'psi-' mapped to Statevector objects.
@@ -71,8 +71,7 @@ def get_bell_states():
         states[name] = Statevector.from_instruction(qc)
     return states
 
-# Pre-initialized constants for instant import
 Z_BASIS = get_2qubit_z_basis()
 X_BASIS = get_2qubit_x_basis()
 Y_BASIS = get_2qubit_y_basis()
-BELL_STATES = get_bell_states()
+BELL_BASIS = get_bell_basis()
