@@ -1,4 +1,4 @@
-# cz_entanglement.py
+# scripts/cz_entanglement.py
 
 # This script demonstrates how the CZ gate processes two X-basis inputs 
 # to produce an entangled Statevector. It maps the provided logic 
