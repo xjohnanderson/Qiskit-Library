@@ -46,7 +46,33 @@ def get_2qubit_y_basis():
         states[label] = Statevector.from_instruction(qc)
     return states
 
+
+def get_bell_states():
+    # Function Constraints:
+    # Inputs: None
+    # Outputs: dict -> Keys 'phi+', 'phi-', 'psi+', 'psi-' mapped to Statevector objects.
+    # Logic: Constructs the four maximally entangled Bell states using H and CNOT gates.
+    states = {}
+    
+    # Define the 4 Bell State configurations
+    configs = {
+        'phi+': (False, False), # |00>
+        'phi-': (True, False),  # |10>
+        'psi+': (False, True),  # |01>
+        'psi-': (True, True)    # |11>
+    }
+    
+    for name, (apply_z, apply_x) in configs.items():
+        qc = QuantumCircuit(2)
+        qc.h(0)
+        qc.cx(0, 1)
+        if apply_z: qc.z(0)
+        if apply_x: qc.x(1)
+        states[name] = Statevector.from_instruction(qc)
+    return states
+
 # Pre-initialized constants for instant import
 Z_BASIS = get_2qubit_z_basis()
 X_BASIS = get_2qubit_x_basis()
 Y_BASIS = get_2qubit_y_basis()
+BELL_STATES = get_bell_states()
