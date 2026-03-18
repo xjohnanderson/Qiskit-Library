@@ -1,9 +1,11 @@
 # deutsch_oracle_factory.py
 
 # Script: Generates 2-qubit QuantumCircuit objects for Deutsch oracles, 
-# categorized into constant and balanced functional cases.
+# categorized into constant and balanced functional cases. 
+# Includes a verification block for phase kickback behavior.
 
 from qiskit import QuantumCircuit
+from qiskit.quantum_info import Statevector
 
 def get_deutsch_oracle(case):
     # Function Constraints:
@@ -36,3 +38,17 @@ def get_all_oracles():
     # Logic: Iterates through standard cases to provide a complete oracle set.
     cases = ['c0', 'c1', 'b0', 'b1']
     return {case: get_deutsch_oracle(case) for case in cases}
+
+if __name__ == "__main__":
+    # This block only runs when the script is executed directly, not when imported.
+    # Verification using basis_states (Assumes basis_states.py is in the same directory)
+    try:
+        from basis_states import X_BASIS
+        input_state = X_BASIS['+-']
+        
+        print("Verifying Phase Kickback (|+-> input):")
+        for case, oracle in get_all_oracles().items():
+            final_state = input_state.evolve(oracle)
+            print(f"Case {case}: Resulting Statevector -> {final_state.draw('latex')}")
+    except ImportError:
+        print("basis_states.py not found. Skipping verification.")
