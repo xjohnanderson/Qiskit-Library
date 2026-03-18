@@ -1,11 +1,11 @@
-# deutsch_oracle_factory.py
+# factories/deutsch_oracle_factory.py
 
 # Script: Generates 2-qubit QuantumCircuit objects for Deutsch oracles, 
 # categorized into constant and balanced functional cases. 
-# Includes a verification block for phase kickback behavior.
+# Includes a verification block for phase kickback behavior using external factories.
 
 from qiskit import QuantumCircuit
-from qiskit.quantum_info import Statevector
+from factories.basis_factory import X_BASIS
 
 def get_deutsch_oracle(case):
     # Function Constraints:
@@ -40,15 +40,17 @@ def get_all_oracles():
     return {case: get_deutsch_oracle(case) for case in cases}
 
 if __name__ == "__main__":
-    # This block only runs when the script is executed directly, not when imported.
-    # Verification using basis_states (Assumes basis_states.py is in the same directory)
-    try:
-        from basis_states import X_BASIS
-        input_state = X_BASIS['+-']
-        
-        print("Verifying Phase Kickback (|+-> input):")
-        for case, oracle in get_all_oracles().items():
-            final_state = input_state.evolve(oracle)
-            print(f"Case {case}: Resulting Statevector -> {final_state.draw('latex')}")
-    except ImportError:
-        print("basis_states.py not found. Skipping verification.")
+    # This block performs verification using the modular basis_factory.
+    # It demonstrates phase kickback: for balanced oracles, the control qubit (0) 
+    # should flip phase when the target is in the |-> state.
+    
+    # We use the '+-' state (|+> on q0, |-> on q1) to observe kickback.
+    input_state = X_BASIS['+-']
+    
+    print("Verifying Phase Kickback (|+-> input):")
+    print("-" * 40)
+    for case, oracle in get_all_oracles().items():
+        final_state = input_state.evolve(oracle)
+        # For 'b0' and 'b1', the state should evolve toward |--> or -|--> 
+        # (phase flip on the first qubit).
+        print(f"Case {case}: Resulting Statevector -> {final_state.draw('latex')}")

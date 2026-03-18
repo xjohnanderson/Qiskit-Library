@@ -5,30 +5,40 @@ from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector
 from scripts.basis_factory import X_BASIS
 
-def get_cz_statevector(label):
+
+def _evolve_x_basis(label, gate_type):
     """
     Function Constraint:
-    Inputs: label (str) -> e.g., '++', '+-', '-+', or '--'
+    Inputs: 
+        - label (str): X-basis state label.
+        - gate_type (str): 'cx' or 'cz'.
     Outputs: qiskit.quantum_info.Statevector
-    What it does: Retrieves a pre-defined X-basis state and evolves it via a CZ gate.
+    What it does: Helper to evolve X_BASIS states by a specific gate.
     """
     initial_state = X_BASIS[label]
     qc = QuantumCircuit(2)
-    qc.cz(0, 1)
+    
+    if gate_type == 'cx':
+        qc.cx(0, 1)
+    elif gate_type == 'cz':
+        qc.cz(0, 1)
+        
     return initial_state.evolve(qc)
+
+def get_cz_statevector(label):
+    """
+    Function Constraint:
+    Inputs: label (str)
+    Outputs: qiskit.quantum_info.Statevector
+    What it does: Evolves X-basis state via a CZ gate (Symmetric phase flip).
+    """
+    return _evolve_x_basis(label, 'cz')
 
 def get_cx_statevector(label):
     """
     Function Constraint:
-    Inputs: label (str) -> e.g., '++', '+-', '-+', or '--'
+    Inputs: label (str)
     Outputs: qiskit.quantum_info.Statevector
-    What it does: Retrieves a pre-defined X-basis state and evolves it via a CX gate.
-    In the X-basis, this demonstrates phase kickback when the target is in the |-> state.
+    What it does: Evolves X-basis state via a CX gate (Directional phase kickback).
     """
-    initial_state = X_BASIS[label]
-    
-    # Define the CX evolution (Control 0, Target 1)
-    qc = QuantumCircuit(2)
-    qc.cx(0, 1)
-    
-    return initial_state.evolve(qc)
+    return _evolve_x_basis(label, 'cx')

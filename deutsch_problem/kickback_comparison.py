@@ -1,7 +1,7 @@
-# kickback_comparison.py
+# deutsch_problem/kickback_comparison.py
 
-from scripts.basis_factory import X_BASIS
-from scripts.state_factory import get_cx_statevector
+from factories.basis_factory import X_BASIS
+from factories.state_factory import get_cx_statevector
 
 def run_analysis(control_state, target_state):
     """
