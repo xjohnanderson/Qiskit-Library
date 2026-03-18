@@ -1,4 +1,4 @@
-# state_factory.py
+# scripts/state_factory.py
 
 # Script: Provides high-level access to common 2-qubit statevectors to reduce boilerplate code
 
