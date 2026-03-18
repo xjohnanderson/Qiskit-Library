@@ -10,8 +10,9 @@ def encode_x_basis(qc, state_symbol, qubit_index):
         - state_symbol (str): The desired state, either '+' or '-'.
         - qubit_index (int): The index of the qubit to initialize.
     Outputs: None (Modifies QuantumCircuit in-place).
-    What it does: Maps a '+' or '-' symbol to the corresponding quantum 
-    superposition state on the X-axis of the Bloch sphere.
+    Transforms a qubit from the computational basis (|0> or |1>) 
+    into the X-basis states |+> or |-> on the Bloch sphere based on the 
+    provided state_symbol.
     """
     if state_symbol == '-':
         qc.x(qubit_index)
