@@ -1,4 +1,4 @@
-# scripts/basis_factory.py
+# factories/basis_factory.py
 
 # Script: Provides high-level access to common 2-qubit statevectors to reduce boilerplate code
 
@@ -27,29 +27,26 @@ def get_2qubit_x_basis():
     return states
 
 
-
-def get_cz_statevector(a, b):
-    # Input: a (str), b (str) -> '+' or '-' representing the initial phase of each qubit.
-    # Output: qiskit.quantum_info.Statevector -> The resulting 2-qubit entangled state.
-    # Description: Initializes two qubits in the X-basis based on input signs, 
-    # entangles them via a Controlled-Z (CZ) gate, and computes the system statevector.
-   
-    qc = QuantumCircuit(2)
-    
-    # Initialize qubits based on input (+ or -)
-    if a == '-':
-        qc.x(0)
-    qc.h(0)
-    
-    if b == '-':
-        qc.x(1)
-    qc.h(1)
-    
-    # Apply CZ
-    qc.cz(0, 1)
-    
-    return Statevector.from_instruction(qc)
+def get_2qubit_y_basis():
+    # Function Constraints:
+    # Inputs: None
+    # Outputs: dict -> Keys 'rr', 'rl', 'lr', 'll' mapped to Statevector objects.
+    # Logic: Generates Y-basis (Circular) states using H and S gates. 
+    # 'r' corresponds to |i> and 'l' corresponds to |-i>.
+    states = {}
+    labels = ['rr', 'rl', 'lr', 'll']
+    for label in labels:
+        qc = QuantumCircuit(2)
+        for i, char in enumerate(label):
+            if char == 'l': 
+                qc.x(i)
+            # Map |0> -> |i> and |1> -> |-i>
+            qc.h(i)
+            qc.s(i)
+        states[label] = Statevector.from_instruction(qc)
+    return states
 
 # Pre-initialized constants for instant import
 Z_BASIS = get_2qubit_z_basis()
 X_BASIS = get_2qubit_x_basis()
+Y_BASIS = get_2qubit_y_basis()
