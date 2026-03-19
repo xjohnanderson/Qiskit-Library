@@ -22,6 +22,10 @@ def _evolve_x_basis(label, gate_type):
         qc.cx(0, 1)
     elif gate_type == 'cz':
         qc.cz(0, 1)
+    elif gate_type == 'cy':
+        qc.cy(0, 1)
+    else:
+        print("Error missing case")
         
     return initial_state.evolve(qc)
 
@@ -42,3 +46,14 @@ def get_cx_statevector(label):
     What it does: Evolves X-basis state via a CX gate (Directional phase kickback).
     """
     return _evolve_x_basis(label, 'cx')
+
+
+
+def get_cy_statevector(label):
+    """
+    Function Constraint:
+    Inputs: label (str)
+    Outputs: qiskit.quantum_info.Statevector
+    What it does: Evolves X-basis state via a CY gate (Complex phase rotation kickback).
+    """
+    return _evolve_x_basis(label, 'cy')
